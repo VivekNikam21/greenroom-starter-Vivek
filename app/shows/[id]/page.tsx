@@ -260,12 +260,6 @@ export default async function ShowDetailPage({
               )}
             </CardContent>
           </Card>
-          {/* Deal interpretation (AI-parsed) */}
-          <DealInterpretation
-            showId={show.id}
-            dealText={deal?.dealNotesFreetext ?? null}
-            initialParsed={parsedDeal}
-          />
 
           {/* Artist & agent */}
           <Card>
@@ -305,7 +299,19 @@ export default async function ShowDetailPage({
               )}
             </CardContent>
           </Card>
+        </div>
 
+        {/* Deal interpretation — AI's reading, standalone full-width section */}
+        <div className="mt-5">
+          <DealInterpretation
+            showId={show.id}
+            dealText={deal?.dealNotesFreetext ?? null}
+            initialParsed={parsedDeal}
+          />
+        </div>
+
+        {/* Operations grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
           {/* Box office */}
           <Card>
             <CardHeader>

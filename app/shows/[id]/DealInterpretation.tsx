@@ -154,18 +154,30 @@ export function DealInterpretation({
       <CardContent className="space-y-6">
         {/* Structured fields */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Field label="Deal type">{parsed.dealType}</Field>
-          <Field label="Guarantee">
-            {parsed.guarantee ? formatMoney(parsed.guarantee.amount) : "—"}
-          </Field>
-          <Field label="Percentage">
-            {parsed.percentage
-              ? `${(parsed.percentage.value * 100).toFixed(0)}% of ${parsed.percentage.basis}`
-              : "—"}
-          </Field>
-          <Field label="Expense cap">
-            {parsed.expenseCap ? formatMoney(parsed.expenseCap.amount) : "—"}
-          </Field>
+          <Field label="Deal type" mono value={parsed.dealType} />
+          <Field
+            label="Guarantee"
+            mono
+            value={
+              parsed.guarantee ? formatMoney(parsed.guarantee.amount) : "—"
+            }
+          />
+          <Field
+            label="Percentage"
+            mono
+            value={
+              parsed.percentage
+                ? `${(parsed.percentage.value * 100).toFixed(0)}% of ${parsed.percentage.basis}`
+                : "—"
+            }
+          />
+          <Field
+            label="Expense cap"
+            mono
+            value={
+              parsed.expenseCap ? formatMoney(parsed.expenseCap.amount) : "—"
+            }
+          />
         </div>
 
         {/* Recoups */}

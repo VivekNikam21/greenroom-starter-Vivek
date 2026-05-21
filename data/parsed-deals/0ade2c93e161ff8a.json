@@ -1,0 +1,41 @@
+{
+  "dealType": "percentage_of_net",
+  "guarantee": null,
+  "percentage": {
+    "value": 0.8,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 550,
+    "includes": []
+  },
+  "hospitalityCap": null,
+  "recoups": [],
+  "bonuses": [],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "80% of net after expenses. Expenses capped $550.",
+      "severity": "medium",
+      "description": "'After expenses' could mean (a) after actual expenses up to the $550 cap — i.e., if actuals are $400, artist gets 80% of gross minus $400 — or (b) always after the full $550 cap regardless of actual spend. These produce different artist payouts when actuals fall below the cap.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Artist pays actual expenses up to the $550 ceiling; if actuals are lower, artist benefits.",
+          "impact": "Artist-favorable when actuals < $550. E.g., if actuals are $300, artist gets 80% of (gross − $300) instead of 80% of (gross − $550), a difference of $200 × 0.80 = $160."
+        },
+        {
+          "id": "p2",
+          "summary": "The $550 cap is always the deduction regardless of actual spend; venue keeps any savings below the cap.",
+          "impact": "Venue-favorable when actuals < $550. On a show where actuals are $300, venue retains an extra $160 that would otherwise go to artist."
+        }
+      ],
+      "suggestedClarification": "When actuals come in below the $550 cap, do we net against actual expenses or always deduct the full $550? Can you confirm which applies here?"
+    }
+  ],
+  "sourceText": "80% of net after expenses. Expenses capped $550. No guarantee.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779406143334
+}
