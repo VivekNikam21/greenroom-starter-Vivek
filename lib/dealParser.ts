@@ -141,7 +141,17 @@ Each AmbiguityFlag needs:
 - plausibleReadings: 2+ readings with id, summary (one sentence), impact (which side it favors and roughly how much in dollars when possible)
 - suggestedClarification: a 1-2 sentence question the booker could send the agent to resolve
 
-When in doubt about ambiguity, FLAG IT. False positives are cheap; false negatives cost the venue real money.
+SEVERITY CALIBRATION (be honest, not paranoid):
+- "high": Ambiguity has caused real disputes at venues, AND the dollar impact is meaningful (>$300 on a typical mid-size show). The marketing-recoup-placement case is the canonical "high".
+- "medium": Two readings exist with $100-300 impact, but the dispute would likely resolve quickly.
+- "low": Two readings technically exist, but industry convention strongly favors one reading, OR the dollar impact is <$100. Most "could be interpreted two ways" technicalities belong here.
+
+When in doubt about SEVERITY, default DOWN, not up. Mariana will tune out a tool that screams about every clause.
+
+DO NOT flag:
+- Industry-standard terms with widely accepted meaning (e.g., "sold out" = 95%+ capacity is the convention)
+- Clauses the prose itself disambiguates ("after the capped expenses" with a separately stated cap is conventionally read as "after the cap-limited expenses")
+- Pure word-play ambiguities no agent or booker would actually argue about
 
 EXAMPLE OUTPUT (for a Vs deal with a marketing recoup):
 {

@@ -1,5 +1,6 @@
 // scripts/test-parse.ts
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
 import { parseDeal } from "../lib/dealParser";
 
 // The actual Coastal Spell deal text from data/dispute-thread.md
