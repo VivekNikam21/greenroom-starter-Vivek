@@ -1,6 +1,6 @@
 // lib/dealParser.ts
 import Anthropic from "@anthropic-ai/sdk";
-
+import { hashDealText, getCached, setCached } from "./llmCache";
 const MODEL = "claude-sonnet-4-6";
 
 // ============================================================
@@ -195,9 +195,22 @@ function getClient(): Anthropic {
   return new Anthropic({ apiKey });
 }
 
-export async function parseDeal(dealText: string): Promise<ParsedDeal> {
-  const client = getClient();
+export async function parseDeal(
+  dealText: string,
+  opts?: { skipCache?: boolean },
+): Promise<ParsedDeal> {
+  const hash = hashDealText(dealText);
 
+  // 1. Check cache first (unless explicitly skipped)
+  if (!opts?.skipCache) {
+    const cached = await getCached<ParsedDeal>(hash);
+    if (cached) {
+      return cached;
+    }
+  }
+
+  // 2. Cache miss → call the API
+  const client = getClient();
   const response = await client.messages.create({
     model: MODEL,
     max_tokens: 2000,
@@ -210,7 +223,6 @@ export async function parseDeal(dealText: string): Promise<ParsedDeal> {
     throw new Error("Model did not return a text response.");
   }
 
-  // Be defensive: strip markdown fences if the model adds them despite instructions
   let json = textBlock.text.trim();
   if (json.startsWith("```")) {
     json = json.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
@@ -225,10 +237,14 @@ export async function parseDeal(dealText: string): Promise<ParsedDeal> {
     );
   }
 
-  return {
+  const result: ParsedDeal = {
     ...parsed,
     sourceText: dealText,
     modelVersion: MODEL,
     parsedAt: Date.now(),
   };
+
+  // 3. Write to cache for next time
+  await setCached(hash, result);
+  return result;
 }

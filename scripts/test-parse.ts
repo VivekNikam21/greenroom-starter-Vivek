@@ -37,6 +37,18 @@ async function run(label: string, text: string) {
 }
 
 (async () => {
+  console.log("FIRST RUN (cache misses — will call API):");
+  const t1 = Date.now();
   await run("Coastal Spell (should flag marketing recoup ambiguity)", COASTAL_SPELL_DEAL);
-  await run("Happy path (should have ZERO ambiguities)", HAPPY_PATH_DEAL);
+  await run("Happy path", HAPPY_PATH_DEAL);
+  console.log(`\n→ Total time first run: ${Date.now() - t1}ms\n`);
+
+  console.log("\n" + "█".repeat(60));
+  console.log("SECOND RUN (cache hits — should be near-instant):");
+  console.log("█".repeat(60));
+  const t2 = Date.now();
+  await run("Coastal Spell (cached)", COASTAL_SPELL_DEAL);
+  await run("Happy path (cached)", HAPPY_PATH_DEAL);
+  console.log(`\n→ Total time second run: ${Date.now() - t2}ms`);
+  console.log(`→ Speed up: ${((Date.now() - t1) / (Date.now() - t2)).toFixed(0)}x faster`);
 })();

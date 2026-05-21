@@ -1,0 +1,80 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 5000
+  },
+  "percentage": {
+    "value": 0.8,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 2500,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 500
+  },
+  "recoups": [
+    {
+      "id": "r1",
+      "category": "marketing",
+      "label": "Marketing recoup",
+      "amount": 900,
+      "againstWhat": "unknown"
+    }
+  ],
+  "bonuses": [
+    {
+      "id": "b1",
+      "type": "gross_threshold",
+      "label": "$1,000 bonus over $25k gross",
+      "threshold": 25000,
+      "amount": 1000
+    }
+  ],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "Marketing recoup of $900 against gross",
+      "severity": "high",
+      "description": "The phrase 'against gross' is ambiguous: it could mean the $900 is deducted from gross before the 80% net percentage is calculated, or it could mean the $900 falls inside the $2,500 expense cap (and is therefore already reflected in the net figure). These two readings produce meaningfully different artist payouts.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "The $900 is a separate, above-the-line deduction from gross before expenses and the 80% split are applied.",
+          "impact": "Venue-favorable. Artist nets roughly $720 less (80% of $900) compared to reading p2 on a show that clears the percentage side."
+        },
+        {
+          "id": "p2",
+          "summary": "The $900 is one line item within the $2,500 expense cap, already accounted for in the net calculation.",
+          "impact": "Artist-favorable. The cap acts as a ceiling on all venue charges including marketing, limiting total deductions to $2,500."
+        }
+      ],
+      "suggestedClarification": "Can you confirm whether the $900 marketing recoup is deducted from gross as a separate line before the expense cap and 80% split are applied, or whether it counts as one of the line items inside the $2,500 expense cap?"
+    },
+    {
+      "id": "amb2",
+      "clauseRef": "Expenses capped $2,500 / Hospitality cap $500",
+      "severity": "medium",
+      "description": "It is unclear whether the $500 hospitality cap is a sub-limit inside the $2,500 expense cap, or an additional allowance on top of it, making the effective total expense ceiling either $2,500 or $3,000.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Hospitality is a sub-category within the $2,500 cap; total venue deductions cannot exceed $2,500 regardless of hospitality spend.",
+          "impact": "Artist-favorable. Hard ceiling stays at $2,500."
+        },
+        {
+          "id": "p2",
+          "summary": "Hospitality is a separate, additive cap on top of the $2,500 expense cap, allowing up to $3,000 in total deductions.",
+          "impact": "Venue-favorable by up to $500 on shows where hospitality is fully spent."
+        }
+      ],
+      "suggestedClarification": "Is the $500 hospitality cap a sub-limit within the $2,500 expense cap, or is it an additional $500 allowance that stacks on top of the $2,500, for a possible $3,000 total in deductions?"
+    }
+  ],
+  "sourceText": "$5,000 vs 80% of net after expenses, whichever greater. Expenses capped $2,500. Hospitality cap $500. +$1,000 bonus over $25k gross. Marketing recoup of $900 against gross.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779351376961
+}

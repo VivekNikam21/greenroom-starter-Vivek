@@ -1,0 +1,76 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 3500
+  },
+  "percentage": {
+    "value": 0.85,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 1800,
+    "includes": [
+      "production",
+      "sound",
+      "lights"
+    ]
+  },
+  "hospitalityCap": {
+    "amount": 400
+  },
+  "recoups": [],
+  "bonuses": [
+    {
+      "id": "b1",
+      "type": "attendance_threshold",
+      "label": "$500 bonus if attendance exceeds 550",
+      "threshold": 550,
+      "amount": 500
+    }
+  ],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "+$500 if attendance > 550",
+      "severity": "medium",
+      "description": "The deal says 'attendance > 550' but does not specify whether attendance is measured by tickets scanned, tickets sold, or paid attendance net of comps. On a show near the threshold this could swing the bonus.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Attendance = paid tickets sold (presale + day-of), regardless of whether holders actually entered",
+          "impact": "Artist-favorable in sell-ahead scenarios; could trigger bonus even with walk-ups no-shows."
+        },
+        {
+          "id": "p2",
+          "summary": "Attendance = bodies scanned at door, net of complimentary admissions",
+          "impact": "Venue-favorable; no-shows and comps could keep the count under 550 and forfeit the $500 bonus."
+        }
+      ],
+      "suggestedClarification": "For the attendance bonus: is the 550 threshold measured by tickets sold, tickets scanned at the door, or paid attendance net of comps? And are guest-list comps counted toward or excluded from that number?"
+    },
+    {
+      "id": "amb2",
+      "clauseRef": "Hospitality cap $400 — relationship to expense cap $1,800",
+      "severity": "low",
+      "description": "The deal lists a separate hospitality cap of $400 but the expense cap of $1,800 covers 'production, sound, lights only.' It is unambiguous that hospitality is outside the $1,800 cap, but it is not stated whether the $400 hospitality spend also reduces net before the 85% is applied or is handled as a separate line.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Hospitality is deducted from gross alongside the capped expenses before the 85% net calculation",
+          "impact": "Venue-favorable by up to $340 (85% of $400) on the artist's percentage side."
+        },
+        {
+          "id": "p2",
+          "summary": "Hospitality is a separate settled line and does not affect the net figure used for the percentage calculation",
+          "impact": "Artist-favorable; the percentage base is not reduced by hospitality costs."
+        }
+      ],
+      "suggestedClarification": "Is the $400 hospitality allowance deducted from gross when calculating net for the 85% split, or is it settled as a separate line item outside the percentage calculation?"
+    }
+  ],
+  "sourceText": "$3,500 guarantee vs 85% of net after capped expenses (whichever is greater). Expense cap $1,800 covering production, sound, lights only. Hospitality cap $400. +$500 if attendance > 550.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779351391032
+}
