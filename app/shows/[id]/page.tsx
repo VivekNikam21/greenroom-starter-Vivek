@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { DealInterpretation } from "./DealInterpretation";
+import type { ParsedDeal } from "@/lib/dealParser";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
@@ -74,7 +76,9 @@ export default async function ShowDetailPage({
     .reduce((s, c) => s + c.count, 0);
 
   const bonuses = deal ? parseBonuses(deal) : [];
-
+  const parsedDeal: ParsedDeal | null = deal?.parsedDealJson
+    ? (JSON.parse(deal.parsedDealJson) as ParsedDeal)
+    : null;
   const isDisputed = settlement?.status === "disputed";
 
   return (
@@ -256,6 +260,12 @@ export default async function ShowDetailPage({
               )}
             </CardContent>
           </Card>
+          {/* Deal interpretation (AI-parsed) */}
+          <DealInterpretation
+            showId={show.id}
+            dealText={deal?.dealNotesFreetext ?? null}
+            initialParsed={parsedDeal}
+          />
 
           {/* Artist & agent */}
           <Card>

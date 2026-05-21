@@ -1,0 +1,72 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 8013
+  },
+  "percentage": {
+    "value": 0.85,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 4000,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 500
+  },
+  "recoups": [],
+  "bonuses": [
+    {
+      "id": "b1",
+      "type": "gross_threshold",
+      "label": "$1,200 bonus if gross exceeds $32,000",
+      "threshold": 32000,
+      "amount": 1200
+    }
+  ],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "85/15 after expenses",
+      "severity": "medium",
+      "description": "The phrase 'after expenses' does not specify whether the percentage is applied after CAPPED expenses (max $4,000 deducted) or after ACTUAL expenses if they exceed the cap. On a sold-out show with $5,000 in actual expenses, these produce materially different payouts.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Net is calculated after actual expenses, capped at $4,000 — artist always benefits from the cap acting as a ceiling.",
+          "impact": "Artist-favorable. If actual expenses are $5,000, only $4,000 is deducted, giving the artist ~$850 more on 85% of that difference."
+        },
+        {
+          "id": "p2",
+          "summary": "Net is calculated after actual expenses regardless of cap, with the cap serving only as a separate contractual limit the venue must stay under.",
+          "impact": "Venue-favorable in the edge case where expenses somehow exceed the cap through dispute or accounting error; creates ambiguity about enforcement mechanism."
+        }
+      ],
+      "suggestedClarification": "Can you confirm that 'after expenses' means after the lesser of actual expenses or the $4,000 cap — i.e., artist is never charged more than $4,000 in expenses toward the percentage calculation?"
+    },
+    {
+      "id": "amb2",
+      "clauseRef": "+$1,200 if gross > $32,000",
+      "severity": "low",
+      "description": "The bonus threshold is 'gross > $32,000' but it is unspecified whether 'gross' here means face-value ticket revenue only, or total gross including merch, drink minimums, or other ancillary revenue streams.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Gross means ticket gross only, the standard industry definition in this context.",
+          "impact": "Neutral to slightly artist-unfavorable if ancillary revenue is excluded and the show falls just short of $32,000 in ticket sales alone."
+        },
+        {
+          "id": "p2",
+          "summary": "Gross means total event gross including all revenue sources at the venue.",
+          "impact": "Artist-favorable; ancillary revenue could push total gross over the $32,000 threshold even when ticket gross alone does not."
+        }
+      ],
+      "suggestedClarification": "Is the $32,000 gross threshold calculated on ticket revenue only, or does it include other revenue sources such as drink minimums or ancillary event income?"
+    }
+  ],
+  "sourceText": "Deal: $8,013 vs 85/15 after expenses. Expense cap 4000, hospitality cap 500. +$1,200 if gross > $32,000.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779405733372
+}

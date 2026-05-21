@@ -1,0 +1,18 @@
+{
+  "dealType": "percentage_of_gross",
+  "guarantee": null,
+  "percentage": {
+    "value": 0.8,
+    "basis": "gross"
+  },
+  "expenseCap": null,
+  "hospitalityCap": null,
+  "recoups": [],
+  "bonuses": [],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [],
+  "sourceText": "80% of gross. No expense deductions. Simple split deal.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779405645562
+}

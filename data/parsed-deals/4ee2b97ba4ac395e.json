@@ -1,0 +1,61 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 5000
+  },
+  "percentage": {
+    "value": 0.8,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 2500,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 500
+  },
+  "recoups": [
+    {
+      "id": "r1",
+      "category": "marketing",
+      "label": "Marketing recoup",
+      "amount": 900,
+      "againstWhat": "unknown"
+    }
+  ],
+  "bonuses": [
+    {
+      "id": "b1",
+      "type": "gross_threshold",
+      "label": "$1,000 bonus over $25k gross",
+      "threshold": 25000,
+      "amount": 1000
+    }
+  ],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "Marketing recoup of $900 against gross",
+      "severity": "high",
+      "description": "The phrase 'against gross' is ambiguous: it could mean the $900 is deducted from gross before the 80% net percentage is calculated, or it could mean the $900 counts inside the $2,500 expense cap. The deal note confirms this was actually disputed by WME and resolved with a $720 concession — consistent with the venue having applied reading (p1) and splitting the difference.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Recoup is deducted from gross as a separate line item before the 80% percentage is applied, independent of the expense cap.",
+          "impact": "Venue-favorable. Reduces the net base on which 80% is calculated, costing artist roughly $720 on a typical gross — exactly matching the documented concession amount."
+        },
+        {
+          "id": "p2",
+          "summary": "Recoup counts inside the $2,500 expense cap, not as an additional deduction from gross.",
+          "impact": "Artist-favorable. Cap acts as a ceiling on all venue charges including marketing; artist is made whole by ~$720 relative to reading p1."
+        }
+      ],
+      "suggestedClarification": "Is the $900 marketing recoup deducted from gross as a standalone line before 80% is applied, or does it count inside the $2,500 expense cap? Please confirm in writing before advancing the next show to avoid a repeat of the 3/19/25 dispute."
+    }
+  ],
+  "sourceText": "$5,000 vs 80% of net after expenses, whichever greater. Expenses capped $2,500. Hospitality cap $500. +$1,000 bonus over $25k gross. Marketing recoup of $900 against gross. (Note added 3/19/25: this deal email was ambiguous — recoup interpretation disputed by WME, resolved with $720 concession.)",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779404630418
+}

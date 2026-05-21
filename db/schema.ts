@@ -124,7 +124,10 @@ export const deals = sqliteTable("deals", {
 
   bonusesJson: text("bonuses_json"),
   dealNotesFreetext: text("deal_notes_freetext"),
-
+  // ⬇⬇⬇ NEW: AI-parsed structured representation + hash of the source prose
+  parsedDealJson: text("parsed_deal_json"),
+  parsedDealHash: text("parsed_deal_hash"),
+  // ⬆⬆⬆ NEW
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
 });
 

@@ -1,0 +1,45 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 7130
+  },
+  "percentage": {
+    "value": 0.75,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 3550,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 600
+  },
+  "recoups": [],
+  "bonuses": [],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "75% of net / Expenses to 3550",
+      "severity": "medium",
+      "description": "The deal says '75% of net' and 'expenses to 3550' but does not specify whether 'net' means gross minus the capped expenses (i.e., actuals capped at $3,550) or gross minus actual expenses regardless of the cap. If actual expenses run under $3,550, the result is the same; if they run over, the two readings diverge.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Net = gross minus actual expenses, capped at $3,550 — artist benefits when actuals exceed the cap because the deduction is limited to $3,550.",
+          "impact": "Artist-favorable when actuals exceed cap. On a $15k gross with $4,000 in actuals, artist gets 75% of $11,450 ($8,588) vs 75% of $11,000 ($8,250) — roughly $338 difference."
+        },
+        {
+          "id": "p2",
+          "summary": "Net = gross minus actual expenses with no ceiling — the $3,550 is a guideline or budget target, not a hard cap on deductions.",
+          "impact": "Venue-favorable when actuals exceed $3,550. Same $15k gross scenario: artist gets 75% of $11,000 = $8,250 instead of $8,588."
+        }
+      ],
+      "suggestedClarification": "Can you confirm that the $3,550 expense figure is a hard cap — meaning venue expenses above that amount are the venue's responsibility and won't reduce the artist's net percentage base?"
+    }
+  ],
+  "sourceText": "7,130 g'tee vs 75% of net. Expenses to 3550. Hospitality $600.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779405671967
+}
