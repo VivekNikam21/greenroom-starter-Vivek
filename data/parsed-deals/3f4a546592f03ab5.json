@@ -1,0 +1,45 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 1291
+  },
+  "percentage": {
+    "value": 0.85,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 650,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 600
+  },
+  "recoups": [],
+  "bonuses": [],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "85% of net",
+      "severity": "medium",
+      "description": "The deal says '85% of net' but does not specify whether 'net' means gross minus the capped expenses ($650 ceiling) or gross minus actual expenses (which could exceed the cap). If actuals run over the cap, the two readings produce different payouts.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Net is calculated after the cap-limited expenses, so the venue absorbs any overage above $650.",
+          "impact": "Artist-favorable when actual expenses exceed $650. On a show where actuals hit $900, artist sees ~$212 more (85% of the $250 difference)."
+        },
+        {
+          "id": "p2",
+          "summary": "Net is calculated after actual expenses, with $650 stated as a soft target rather than a hard ceiling.",
+          "impact": "Venue-favorable when actuals exceed $650. Same $900 actuals scenario costs the artist ~$212 versus reading p1."
+        }
+      ],
+      "suggestedClarification": "Is the $650 expense figure a hard cap (venue eats any overage) or an estimate, with net calculated on actual expenses? This affects the 85% base."
+    }
+  ],
+  "sourceText": "1,291 g'tee vs 85% of net. Expenses to 650. Hospitality $600.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779409973430
+}

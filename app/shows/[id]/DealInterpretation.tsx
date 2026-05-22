@@ -511,11 +511,21 @@ export function DealInterpretation({
           )}
 
           {/* Unresolved ambiguities */}
+          {/* Unresolved ambiguities */}
           {unresolved.length > 0 && (
             <div>
               <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
                 Ambiguities to resolve
               </div>
+              {unresolved.some((a) => a.severity === "high") ? (
+                <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded px-3 py-2 mb-3">
+                  Settlement is blocked until high-severity ambiguities are resolved. Pick a reading or send a clarification email to the agent.
+                </p>
+              ) : (
+                <p className="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded px-3 py-2 mb-3">
+                  These won&apos;t block settlement, but resolving them now prevents Monday-morning questions from the agent.
+                </p>
+              )}
               <div className="space-y-3">
                 {unresolved.map((a) => (
                   <AmbiguityCard
