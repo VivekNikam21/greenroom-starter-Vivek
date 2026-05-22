@@ -30,7 +30,7 @@ Three shows anchor the walkthrough. Each highlights a different aspect of the sl
 | --- | --- | --- |
 | **Coastal Spell** (canonical dispute) | `/shows/show_coastal_spell_dispute` | High-severity ambiguity on a marketing recoup; clarification email auto-drafted to the *current* agent of record (Tom Neary at Wasserman, not the historical WME contact); settlement blocked until resolved; resolution propagates structurally |
 | **Nevada Sundown** (walkout) | `/shows/show_0346` | Parser correctly identifies the walkout variant; engine refuses to settle ("won't settle this variant — by design"); existing sign-off on file reads "OK. Good night." — exactly the pattern the per-line sign-off mechanism replaces |
-| **Blue Dial** (vanilla Vs) | `/shows/show_0185` | Clean Vs settlement with full source-clause provenance and per-line sign-off UI |
+| **Blue Dial** (vanilla Vs) | `/shows/show_0188` | Clean Vs settlement with full source-clause provenance and per-line sign-off UI |
 
 The Coastal Spell flow is the primary demo. The settled amount of **$12,284.80** matches the agent's calculation from the historical dispute thread; the original tool produced $11,565, which is where the $720 dispute came from.
 
@@ -65,8 +65,8 @@ npm run db:reset
 # 3. Start dev server
 npm run dev
 
-# 4. Open
-open http://localhost:3000/shows
+# 4. Open this URL in your browser
+http://localhost:3000/shows
 ```
 
 Then click into any of the three demo shows above. Click "Parse deal terms" to invoke the parser — for the demo shows, this hits the cache and returns instantly. No API call.
@@ -133,8 +133,3 @@ The verification scripts in `scripts/` will reproduce these numbers against your
 
 ---
 
-## Original starter setup (preserved from the upstream repo)
-
-The setup instructions below come from the upstream case-study starter and are preserved for completeness. If you're cloning fresh, the "Run locally" section above is the shorter happy path.
-
-[paste original starter README content here if you want to preserve it for the upstream contributors — otherwise it can be removed since the relevant steps are above]
