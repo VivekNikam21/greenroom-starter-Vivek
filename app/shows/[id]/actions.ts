@@ -57,3 +57,84 @@ export async function parseDealAction(
     return { ok: false, error: msg };
   }
 }
+
+export type ResolveAmbiguityActionResult =
+  | { ok: true; parsed: ParsedDeal }
+  | { ok: false; error: string };
+
+/**
+ * Mark a specific ambiguity as resolved by selecting one of its plausible readings.
+ *
+ * When the ambiguity is about a recoup's placement, this also propagates the
+ * resolution to the matching recoup — flipping `againstWhat` from "unknown"
+ * to either "outside_expense_cap" or "inside_expense_cap" based on the
+ * chosen reading's language. This keeps the downstream settlement engine
+ * unblocked: it can refuse to settle until ambiguities are resolved and then
+ * compute cleanly once they are.
+ */
+export async function resolveAmbiguityAction(
+  showId: string,
+  ambiguityId: string,
+  readingId: string,
+  source: "agent_email" | "manual_override" = "manual_override",
+  note?: string,
+): Promise<ResolveAmbiguityActionResult> {
+  try {
+    const row = await db.query.deals.findFirst({
+      where: eq(deals.showId, showId),
+    });
+    if (!row?.parsedDealJson) {
+      return { ok: false, error: "Deal has not been parsed yet." };
+    }
+
+    const parsed = JSON.parse(row.parsedDealJson) as ParsedDeal;
+    const amb = parsed.ambiguities.find((a) => a.id === ambiguityId);
+    if (!amb) return { ok: false, error: `Ambiguity ${ambiguityId} not found.` };
+
+    const reading = amb.plausibleReadings.find((r) => r.id === readingId);
+    if (!reading) return { ok: false, error: `Reading ${readingId} not found.` };
+
+    amb.resolved = {
+      readingId,
+      resolvedAt: Date.now(),
+      source,
+      note,
+    };
+
+    // If this ambiguity governs a recoup placement, propagate to the recoup.
+    // Heuristic: parse the reading's summary for "outside"/"separate" vs
+    // "inside"/"within"/"part of" keywords.
+    if (/recoup/i.test(amb.clauseRef)) {
+      const matchingRecoup = parsed.recoups.find(
+        (r) =>
+          amb.clauseRef.toLowerCase().includes(r.label.toLowerCase()) ||
+          amb.clauseRef.toLowerCase().includes(r.category),
+      );
+      if (matchingRecoup && matchingRecoup.againstWhat === "unknown") {
+        const s = reading.summary.toLowerCase();
+        if (/separate|outside|deducted from gross|before.*cap/.test(s)) {
+          matchingRecoup.againstWhat = "outside_expense_cap";
+        } else if (/inside|part of.*cap|counts.*cap|within|inside the/.test(s)) {
+          matchingRecoup.againstWhat = "inside_expense_cap";
+        }
+      }
+    }
+
+    await db
+      .update(deals)
+      .set({ parsedDealJson: JSON.stringify(parsed) })
+      .where(eq(deals.showId, showId));
+
+    try {
+      revalidatePath(`/shows/${showId}`);
+    } catch {
+      // not in request context
+    }
+
+    return { ok: true, parsed };
+  } catch (e) {
+    console.error("[resolveAmbiguityAction]", e);
+    const msg = e instanceof Error ? e.message : "Unknown error";
+    return { ok: false, error: msg };
+  }
+}

@@ -307,6 +307,10 @@ export default async function ShowDetailPage({
             showId={show.id}
             dealText={deal?.dealNotesFreetext ?? null}
             initialParsed={parsedDeal}
+            agentName={agent?.name ?? null}
+            agentEmail={agent?.email ?? null}
+            artistName={artist?.name ?? null}
+            showDate={formatShowDateFull(show.date)}
           />
         </div>
 

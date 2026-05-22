@@ -1,0 +1,41 @@
+{
+  "dealType": "percentage_of_net",
+  "guarantee": null,
+  "percentage": {
+    "value": 0.9,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 900,
+    "includes": []
+  },
+  "hospitalityCap": null,
+  "recoups": [],
+  "bonuses": [],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "90% of net after expenses. Expenses capped $900.",
+      "severity": "medium",
+      "description": "The phrase 'after expenses' combined with a cap is ambiguous: does the artist get 90% of (gross minus actual expenses, capped at $900), meaning if actual expenses are $700 the deduction is $700 — or does the cap act as a flat deduction so the artist always nets 90% of (gross minus $900)?",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Deduct actual expenses up to the $900 cap; if actuals are lower than $900, only actual expenses are deducted.",
+          "impact": "Artist-favorable when actual expenses are below $900. On a $5,000 gross with $700 actuals, artist earns 90% of $4,300 = $3,870 vs. $3,690 under p2 — a $180 difference."
+        },
+        {
+          "id": "p2",
+          "summary": "The $900 cap is treated as a flat deduction regardless of actual expenses, simplifying settlement.",
+          "impact": "Venue-favorable when actuals are below $900. Same example: artist earns 90% of $4,100 = $3,690."
+        }
+      ],
+      "suggestedClarification": "To confirm before show day: does the $900 expense cap represent the maximum we can deduct (so we only deduct actual expenses up to $900), or is $900 deducted as a flat amount at settlement regardless of what expenses actually come in at?"
+    }
+  ],
+  "sourceText": "90% of net after expenses. Expenses capped $900. No guarantee.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779408684319
+}

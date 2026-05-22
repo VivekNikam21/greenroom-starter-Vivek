@@ -1,0 +1,41 @@
+{
+  "dealType": "percentage_of_net",
+  "guarantee": null,
+  "percentage": {
+    "value": 0.9,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 3050,
+    "includes": []
+  },
+  "hospitalityCap": null,
+  "recoups": [],
+  "bonuses": [],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "90% of net after expenses. Expenses capped $3050.",
+      "severity": "medium",
+      "description": "When actual expenses exceed the $3,050 cap, it is unclear whether 'net' is calculated using actual expenses or the capped amount. If capped, the artist benefits when actuals exceed the cap; if actual, the venue absorbs nothing above the cap and the artist bears the overage.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Net is calculated using only the capped $3,050, regardless of actual expenses — overage stays with the venue",
+          "impact": "Artist-favorable when actuals exceed cap. On a $5,000 gross with $4,000 actual expenses, artist gets 90% of $1,950 ($1,755) vs. 90% of $1,000 ($900) — a $855 difference."
+        },
+        {
+          "id": "p2",
+          "summary": "Net is calculated using actual expenses up to the cap, and the cap is simply a ceiling the venue agrees not to exceed — both parties share the assumption actuals won't go over",
+          "impact": "Neutral if actuals stay under $3,050; becomes venue-favorable if actuals are allowed to creep above the stated cap through a loose interpretation of what's included."
+        }
+      ],
+      "suggestedClarification": "To confirm: if actual expenses exceed $3,050, is net calculated using the capped $3,050 (artist gets the upside) or using actual expenses (venue absorbs the overage some other way)? And does the cap include all venue operating costs, or only specific categories?"
+    }
+  ],
+  "sourceText": "90% of net after expenses. Expenses capped $3050. No guarantee.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779409058688
+}

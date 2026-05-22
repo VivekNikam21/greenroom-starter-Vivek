@@ -1,0 +1,64 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 8247
+  },
+  "percentage": {
+    "value": 0.85,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 4100,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 300
+  },
+  "recoups": [],
+  "bonuses": [],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "85% of net after expenses",
+      "severity": "medium",
+      "description": "The phrase 'after expenses' doesn't specify whether the percentage applies after the capped expense amount ($4,100 ceiling) or after actual expenses, whichever is lower. If actual expenses run under $4,100, there's no dispute — but if actuals exceed the cap, the two readings diverge on what 'net' means.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Net is calculated using the capped expense figure ($4,100 max), regardless of actual expenses",
+          "impact": "Artist-favorable when actuals exceed cap. On a $20k gross with $5,000 actual expenses, artist nets 85% of $15,900 = $13,515 vs guarantee of $8,247."
+        },
+        {
+          "id": "p2",
+          "summary": "Net is calculated using actual expenses up to the cap — meaning venue deducts the lesser of actuals or $4,100",
+          "impact": "Equivalent to p1 in practice when actuals exceed cap, but matters philosophically for how the settlement sheet is constructed. No dollar difference if cap is always the binding constraint."
+        }
+      ],
+      "suggestedClarification": "To confirm: is 'net' calculated by deducting actual expenses or the capped amount ($4,100), whichever is lower — and does the hospitality cap of $300 count inside or outside the $4,100 expense cap?"
+    },
+    {
+      "id": "amb2",
+      "clauseRef": "Hospitality cap $300 / Expenses capped $4100",
+      "severity": "medium",
+      "description": "The deal names both an expense cap ($4,100) and a hospitality cap ($300) but doesn't state whether hospitality costs are included within the $4,100 or are an additional allowable deduction on top of it.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Hospitality is a sub-category inside the $4,100 expense cap; total deductions cannot exceed $4,100",
+          "impact": "Venue-neutral to artist-favorable. Total venue deductions are always bounded by $4,100."
+        },
+        {
+          "id": "p2",
+          "summary": "Hospitality is a separate line deducted on top of the $4,100 cap; total deductions could reach $4,400",
+          "impact": "Venue-favorable. Artist receives up to $255 less (85% of $300 extra deduction) on shows where the percentage side wins."
+        }
+      ],
+      "suggestedClarification": "Is the $300 hospitality cap a sub-line within the $4,100 expense cap, or is it an additional allowable deduction on top of the $4,100?"
+    }
+  ],
+  "sourceText": "$8,247 guarantee vs 85% of net after expenses, whichever greater. Expenses capped $4100. Hospitality cap $300.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779408649090
+}
