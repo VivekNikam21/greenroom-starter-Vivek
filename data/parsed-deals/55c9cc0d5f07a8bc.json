@@ -1,0 +1,64 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 2324
+  },
+  "percentage": {
+    "value": 0.85,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 1150,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 600
+  },
+  "recoups": [],
+  "bonuses": [],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "85/15 after expenses",
+      "severity": "medium",
+      "description": "The deal says '85/15 after expenses' but does not state whether the 85% is applied after the capped expenses (i.e., actuals limited to $1,150) or after actual expenses regardless of the cap. If actuals exceed $1,150, these produce different artist payouts.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Net is calculated after the capped expense amount ($1,150 maximum), even if actuals are higher",
+          "impact": "Artist-favorable. If actuals are, say, $1,400, artist still nets as if only $1,150 was deducted, gaining ~$212 (85% of $250 difference)."
+        },
+        {
+          "id": "p2",
+          "summary": "Net is calculated after actual expenses, with the cap serving only as a ceiling the venue committed not to exceed",
+          "impact": "Neutral in practice if venue honors the cap, but leaves open a dispute if venue submits actuals above $1,150."
+        }
+      ],
+      "suggestedClarification": "Can you confirm: is the 85% applied against gross minus the capped $1,150 (regardless of actual expenses), or against gross minus actual expenses up to the $1,150 ceiling?"
+    },
+    {
+      "id": "amb2",
+      "clauseRef": "hospitality cap 600",
+      "severity": "low",
+      "description": "It is not stated whether the $600 hospitality cap is included within the $1,150 expense cap or sits outside it as a separate line item.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Hospitality is a sub-category of the $1,150 expense cap, meaning total venue deductions are capped at $1,150 including hospitality",
+          "impact": "Artist-favorable. Maximum deduction is $1,150 total."
+        },
+        {
+          "id": "p2",
+          "summary": "Hospitality is a separate cap stacked on top of the $1,150 expense cap, allowing up to $1,750 in total deductions",
+          "impact": "Venue-favorable. Could reduce artist net by up to $510 extra (85% of $600) versus reading p1."
+        }
+      ],
+      "suggestedClarification": "Is the $600 hospitality cap a sub-item within the $1,150 expense cap, or is it an additional allowance on top of the $1,150?"
+    }
+  ],
+  "sourceText": "Deal: $2,324 vs 85/15 after expenses. Expense cap 1150, hospitality cap 600.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779447489019
+}

@@ -1,0 +1,76 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 4310
+  },
+  "percentage": {
+    "value": 0.85,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 2150,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 500
+  },
+  "recoups": [],
+  "bonuses": [
+    {
+      "id": "b1",
+      "type": "attendance_threshold",
+      "label": "$800 bonus if attendance exceeds 585",
+      "threshold": 585,
+      "amount": 800
+    }
+  ],
+  "walkout": {
+    "breakevenAt": 5200,
+    "amount": null,
+    "artistPercentage": 1
+  },
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "walkout above breakeven / Walkout pot: 100% of gross above $5,200",
+      "severity": "high",
+      "description": "The $5,200 breakeven figure is stated but it is unclear whether breakeven is calculated as guarantee alone, guarantee plus capped expenses, or guarantee plus actual expenses. The walkout threshold could mean two very different things depending on what costs are baked into it.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Breakeven is the guarantee only ($4,310), and $5,200 was independently negotiated as the walkout trigger regardless of actual costs.",
+          "impact": "If actual expenses are high, venue could be eating costs beyond the cap before the walkout kicks in; artist-favorable in high-expense scenarios."
+        },
+        {
+          "id": "p2",
+          "summary": "Breakeven means guarantee ($4,310) plus capped expenses ($2,150 + $500 hosp = $2,650), implying the 'true' breakeven should be ~$6,960, making the $5,200 figure internally inconsistent or a hard-negotiated number.",
+          "impact": "Venue-favorable if $5,200 is meant to be a lower-than-full-cost trigger; raises dispute risk if venue later argues actual breakeven is higher."
+        }
+      ],
+      "suggestedClarification": "Can you confirm how the $5,200 walkout threshold was calculated — is it the guarantee alone, or does it include expenses (capped or actual)? And if actual costs exceed the cap, does the walkout trigger move?"
+    },
+    {
+      "id": "amb2",
+      "clauseRef": "+$800 if attendance > 585",
+      "severity": "medium",
+      "description": "It is unclear whether the $800 attendance bonus is additive on top of the vs-deal payout, or whether it is only paid if the artist is not already in the percentage (i.e., structured as a bonus only when on guarantee). Also, '> 585' leaves open whether exactly 585 qualifies.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "The $800 is paid whenever attendance exceeds 585, regardless of whether the artist earned via guarantee or percentage.",
+          "impact": "Artist-favorable; bonus is always additive, worth a flat $800."
+        },
+        {
+          "id": "p2",
+          "summary": "The $800 is only paid when the artist is on the guarantee side (not already earning percentage overage), acting as a soft escalator rather than a pure additive bonus.",
+          "impact": "Venue-favorable; bonus may never trigger if the show does well enough to pay percentage, reducing artist upside by $800 in mid-range gross scenarios."
+        }
+      ],
+      "suggestedClarification": "Is the $800 attendance bonus additive to whatever the vs deal pays out, or is it only paid if the artist does not flip to the percentage side?"
+    }
+  ],
+  "sourceText": "4,310 g'tee vs 85/15 net, walkout above breakeven. Expense cap 2150, hosp $500. +$800 if attendance > 585; Walkout pot: 100% of gross above $5,200.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779447212731
+}
