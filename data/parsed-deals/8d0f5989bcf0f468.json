@@ -1,0 +1,72 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 2642
+  },
+  "percentage": {
+    "value": 0.9,
+    "basis": "net"
+  },
+  "expenseCap": {
+    "amount": 1300,
+    "includes": []
+  },
+  "hospitalityCap": {
+    "amount": 400
+  },
+  "recoups": [],
+  "bonuses": [
+    {
+      "id": "b1",
+      "type": "unresolved_reference",
+      "label": "Performance bonuses per deal memo (see email thread)",
+      "threshold": null,
+      "amount": null
+    }
+  ],
+  "walkout": null,
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "Performance bonuses per the deal memo (see email thread)",
+      "severity": "high",
+      "description": "Bonus terms are not stated in this note — they live only in an external email thread. If the email thread and the settlement sheet are ever separated, there is no authoritative record of the bonus structure in the settlement document itself.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Bonuses are fully specified in the email thread and will be applied correctly at settlement",
+          "impact": "Neutral if the thread is accessible and unambiguous at show day."
+        },
+        {
+          "id": "p2",
+          "summary": "Email thread is unavailable, misread, or disputed at settlement, leaving bonus terms unenforceable or subject to negotiation under pressure",
+          "impact": "Could be venue- or artist-favorable depending on who holds the email; dollar impact unknown but potentially large."
+        }
+      ],
+      "suggestedClarification": "Can you pull the bonus terms out of the email thread and paste them directly into this deal note so the settlement sheet is self-contained?"
+    },
+    {
+      "id": "amb2",
+      "clauseRef": "90% of net / Expenses to 1300",
+      "severity": "medium",
+      "description": "The deal says '90% of net' with expenses capped at $1,300, but does not specify whether 'net' is calculated using actual expenses (up to the cap) or the cap amount itself when actuals are lower. Most venues read this as 'actual expenses, not to exceed $1,300,' but it is not stated explicitly.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Net = gross minus actual expenses, capped at $1,300 (if actuals are $900, venue deducts $900)",
+          "impact": "Artist-favorable when actuals are below the cap; artist earns more."
+        },
+        {
+          "id": "p2",
+          "summary": "Net = gross minus the full $1,300 cap regardless of actuals (venue always deducts $1,300)",
+          "impact": "Venue-favorable by up to ~$360 (90% of the difference) when actuals run below cap."
+        }
+      ],
+      "suggestedClarification": "To confirm: are expenses deducted at actual cost (not to exceed $1,300), or is the full $1,300 always deducted when calculating net?"
+    }
+  ],
+  "sourceText": "2,642 g'tee vs 90% of net. Expenses to 1300. Hospitality $400. Performance bonuses per the deal memo (see email thread).",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779436913184
+}
