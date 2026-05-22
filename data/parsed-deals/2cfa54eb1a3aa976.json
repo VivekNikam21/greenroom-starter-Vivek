@@ -1,0 +1,84 @@
+{
+  "dealType": "vs",
+  "guarantee": {
+    "amount": 4929
+  },
+  "percentage": {
+    "value": 0.85,
+    "basis": "net"
+  },
+  "expenseCap": null,
+  "hospitalityCap": {
+    "amount": 500
+  },
+  "recoups": [],
+  "bonuses": [],
+  "walkout": {
+    "breakevenAt": "guarantee + expenses",
+    "amount": 5900,
+    "artistPercentage": 1
+  },
+  "ratchet": null,
+  "ambiguities": [
+    {
+      "id": "amb1",
+      "clauseRef": "After breakeven on guarantee + expenses, all incremental gross goes to artist",
+      "severity": "high",
+      "description": "The deal says breakeven is 'guarantee + expenses' but no expense cap is defined, leaving 'expenses' open-ended. This affects when the walkout pot kicks in: if a venue inflates or over-reports expenses, the $5,900 walkout threshold could be reached much later — or never.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Expenses are actual, unverified venue costs with no ceiling",
+          "impact": "Venue-favorable. Every additional dollar of expenses delays the walkout pot. On a show with $2,000 in expenses, the walkout effectively starts at $6,929+; at $3,000 it starts at $7,929+."
+        },
+        {
+          "id": "p2",
+          "summary": "Expenses are capped or limited to a mutually agreed schedule of costs",
+          "impact": "Artist-favorable. Walkout pot triggers closer to the stated $5,900 gross threshold, protecting upside."
+        }
+      ],
+      "suggestedClarification": "Can we confirm: does 'expenses' in the breakeven calculation refer to actual venue costs with no cap, or is there an agreed expense schedule or cap that defines what counts?"
+    },
+    {
+      "id": "amb2",
+      "clauseRef": "Walkout pot: 100% of gross above $5,900",
+      "severity": "high",
+      "description": "The $5,900 walkout threshold appears to be a fixed dollar figure, but the earlier breakeven language ties the walkout to 'guarantee + expenses,' which is a variable number. It's unclear whether $5,900 is a hard floor independent of actual expenses, or simply an estimate of breakeven that should be recalculated on show day.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "$5,900 is a fixed, hard threshold — artist takes 100% of every dollar above it regardless of actual expenses",
+          "impact": "Artist-favorable. Artist captures full upside above $5,900 even if expenses run low and guarantee is covered earlier."
+        },
+        {
+          "id": "p2",
+          "summary": "$5,900 is an estimate; actual walkout threshold is recalculated as guarantee + actual expenses on settlement night",
+          "impact": "Venue-favorable. If expenses exceed the implied ~$971 buffer (i.e., $5,900 minus $4,929), the walkout trigger shifts upward, reducing or eliminating the pot."
+        }
+      ],
+      "suggestedClarification": "To confirm before settlement: is the $5,900 walkout number a hard fixed threshold, or will it be recalculated on show day as guarantee ($4,929) plus actual approved expenses?"
+    },
+    {
+      "id": "amb3",
+      "clauseRef": "$4,929 vs 85% net + walkout pot",
+      "severity": "medium",
+      "description": "The deal offers both 85% of net AND a walkout pot. It's unclear whether these are mutually exclusive (artist takes whichever yields more) or whether the walkout pot is an additional layer that applies only after 85% net has already been paid.",
+      "plausibleReadings": [
+        {
+          "id": "p1",
+          "summary": "Artist receives the greater of (guarantee vs 85% net), and separately also receives 100% of gross above $5,900",
+          "impact": "Artist-favorable. Artist could double-collect on the top tier of gross — once via 85% net percentage and again via the walkout pot."
+        },
+        {
+          "id": "p2",
+          "summary": "Once the walkout pot kicks in, the 85% net calculation is replaced by the 100% walkout structure above $5,900",
+          "impact": "Neutral to venue-favorable. The 100% walkout supersedes the 85% net at the top, which is the more conventional interpretation."
+        }
+      ],
+      "suggestedClarification": "Once gross exceeds $5,900 and the walkout pot activates, does the artist receive 100% of incremental gross instead of the 85% net split, or in addition to it?"
+    }
+  ],
+  "sourceText": "$4,929 vs 85% net + walkout pot. After breakeven on guarantee + expenses, all incremental gross goes to artist. Hospitality cap $500. Walkout pot: 100% of gross above $5,900.",
+  "modelVersion": "claude-sonnet-4-6",
+  "parsedAt": 1779414074124
+}

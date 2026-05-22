@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ParsedDeal } from "@/lib/dealParser";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
@@ -48,7 +49,7 @@ export default async function SettlePage({
   const data = await getShowById(id);
   if (!data) notFound();
 
-  const { show, artist, deal, ticketSales, expenses, settlement, recoups } =
+  const { show, artist, deal, ticketSales, expenses, settlement, recoups, comps } =
     data;
 
   if (!deal) {
@@ -62,10 +63,16 @@ export default async function SettlePage({
     );
   }
 
+  const parsedDeal: ParsedDeal | null = deal.parsedDealJson
+    ? (JSON.parse(deal.parsedDealJson) as ParsedDeal)
+    : null;
+
   const calc = calculateSettlement({
     deal,
+    parsedDeal,
     ticketSales,
     expenses,
+    comps,
     venueCapacity: data.venue?.capacity ?? undefined,
   });
   const grossSoFar = ticketSales.reduce((sum, t) => sum + t.gross, 0);
@@ -128,16 +135,30 @@ export default async function SettlePage({
 
       <div className="space-y-6 mt-6">
         {!calc.supported ? (
-          <UnsupportedDeal
-            dealType={calc.dealType}
-            deal={deal}
-            existingSettlement={settlement}
-            grossSoFar={grossSoFar}
-            totalFees={totalFees}
-            totalExpenses={totalExpenses}
-            ticketCount={ticketSales.reduce((s, t) => s + (t.qty ?? 0), 0)}
-            expenseRowCount={expenses.length}
-          />
+          calc.blockedReason === "unresolved_ambiguity" ||
+          calc.blockedReason === "unknown_recoup_placement" ? (
+            <BlockedByAmbiguity
+              showId={show.id}
+              reason={calc.reason}
+            />
+          ) : calc.blockedReason === "deal_variant_unsupported" ? (
+            <BlockedByDealVariant
+              showId={show.id}
+              reason={calc.reason}
+              dealType={calc.dealType}
+            />
+          ) : (
+            <UnsupportedDeal
+              dealType={calc.dealType}
+              deal={deal}
+              existingSettlement={settlement}
+              grossSoFar={grossSoFar}
+              totalFees={totalFees}
+              totalExpenses={totalExpenses}
+              ticketCount={ticketSales.reduce((s, t) => s + (t.qty ?? 0), 0)}
+              expenseRowCount={expenses.length}
+            />
+          )
         ) : (
           <SupportedSettlement calc={calc} existingSettlement={settlement} />
         )}
@@ -713,5 +734,85 @@ function Row({
         {value}
       </div>
     </div>
+  );
+}
+
+  // =====================================================================
+// New blocked states (Step 6)
+// =====================================================================
+function BlockedByAmbiguity({
+  showId,
+  reason,
+}: {
+  showId: string;
+  reason: string;
+}) {
+  return (
+    <Card accent="rose">
+      <CardHeader>
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="h-5 w-5 text-rose-600 mt-0.5 shrink-0" />
+          <div>
+            <CardTitle>Settlement is blocked</CardTitle>
+            <CardDescription>{reason}</CardDescription>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Link
+          href={`/shows/${showId}`}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-rose-700 hover:bg-rose-800 text-white text-[13px] font-medium transition-colors"
+        >
+          Resolve on deal page
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+        <p className="text-[12px] text-ink-500 mt-4 max-w-xl leading-relaxed">
+          Once Mariana picks a reading (or the agent replies via the
+          clarification email), the engine will unblock and settlement can
+          continue. This guardrail exists so we never quietly settle a deal
+          two reasonable people disagree about.
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
+function BlockedByDealVariant({
+  showId,
+  reason,
+  dealType,
+}: {
+  showId: string;
+  reason: string;
+  dealType: string;
+}) {
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-start gap-3">
+          <FileWarning className="h-5 w-5 text-amber-700 mt-0.5 shrink-0" />
+          <div>
+            <CardTitle>Won&apos;t settle this variant — by design</CardTitle>
+            <CardDescription>{reason}</CardDescription>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="text-[13px] text-ink-700 leading-relaxed max-w-2xl">
+          The parser correctly identified this as a {dealType} variant we
+          haven&apos;t built yet (walkout pots or tier ratchets). Rather than
+          settle it with subtly-wrong math, the engine defers to the workflow
+          Mariana already trusts: settle in a spreadsheet, then capture the
+          final number here as a recorded settlement.
+        </div>
+        <Link
+          href={`/shows/${showId}`}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-ink-100 hover:bg-ink-200 text-ink-900 text-[13px] font-medium transition-colors"
+        >
+          Back to deal
+          <ArrowLeft className="h-3.5 w-3.5" />
+        </Link>
+      </CardContent>
+    </Card>
   );
 }
