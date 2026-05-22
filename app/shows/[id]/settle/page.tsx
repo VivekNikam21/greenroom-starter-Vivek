@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/card";
 import { StatusBadge, DealTypeBadge, PlainBadge } from "@/components/ui/badge";
 import { calculateSettlement } from "@/lib/dealMath";
+import { SupportedSettlement } from "./SupportedSettlement";
 import {
   formatMoney,
   formatShowDateFull,
@@ -506,125 +507,6 @@ function UnsupportedDeal({
   );
 }
 
-function SupportedSettlement({
-  calc,
-  existingSettlement,
-}: {
-  calc: Extract<
-    ReturnType<typeof calculateSettlement>,
-    { supported: true }
-  >;
-  existingSettlement: NonNullable<
-    Awaited<ReturnType<typeof getShowById>>
-  >["settlement"];
-}) {
-  return (
-    <>
-      {/* Hero number */}
-      <div className="text-center py-10 mb-2">
-        <div className="eyebrow text-[10px] text-ink-400 mb-3">Total to artist</div>
-        <div
-          className="text-[72px] font-mono tabular font-bold text-ink-900 leading-none"
-          style={{ letterSpacing: "-0.03em" }}
-        >
-          {formatMoney(calc.totalToArtist)}
-        </div>
-        {existingSettlement && (
-          <div className="mt-3">
-            {existingSettlement.status === "paid" ? (
-              <PlainBadge variant="brand">Paid</PlainBadge>
-            ) : existingSettlement.status === "signed" ||
-              existingSettlement.status === "finalized" ? (
-              <PlainBadge variant="brand">Signed</PlainBadge>
-            ) : existingSettlement.status === "disputed" ? (
-              <PlainBadge variant="rose">Disputed</PlainBadge>
-            ) : null}
-          </div>
-        )}
-        {existingSettlement?.totalToArtist != null &&
-          existingSettlement.totalToArtist !== calc.totalToArtist && (
-          <div className="text-[12px] text-ink-400 mt-2">
-            Originally settled at{" "}
-            <span className="font-mono tabular text-ink-600">
-              {formatMoney(existingSettlement.totalToArtist)}
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Worksheet breakdown */}
-      <Card accent="brand">
-        <CardHeader>
-          <div>
-            <CardTitle>Settlement worksheet</CardTitle>
-            <CardDescription className="font-mono">
-              {calc.finalFormula}
-            </CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent className="divide-y divide-ink-100/80">
-          <Row
-            label="Gross box office"
-            value={formatMoney(calc.grossBoxOffice)}
-          />
-          <Row label="Net box office" value={formatMoney(calc.netBoxOffice)} />
-          <Row
-            label="Total expenses (passed through)"
-            value={formatMoney(calc.totalExpenses)}
-          />
-          <div className="pt-3" />
-          {calc.steps.map((step, i) => (
-            <Row
-              key={i}
-              label={step.label}
-              value={formatMoney(step.value)}
-              note={step.note}
-            />
-          ))}
-          <div className="pt-3" />
-          <div className="flex items-baseline justify-between py-3 font-semibold">
-            <span className="text-[13px] text-ink-900">Total to artist</span>
-            <span className="text-[18px] font-mono tabular text-ink-900">
-              {formatMoney(calc.totalToArtist)}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-
-      {calc.bonusesNotTriggered.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Bonuses not triggered</CardTitle>
-            <CardDescription>
-              Structured bonuses on this deal that didn&apos;t hit. Shown for
-              transparency — useful when the agent asks &quot;what about that
-              gross threshold bonus?&quot;
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="divide-y divide-ink-100/80">
-            {calc.bonusesNotTriggered.map((b, i) => (
-              <div
-                key={i}
-                className="py-3 flex items-baseline justify-between gap-4"
-              >
-                <div className="min-w-0">
-                  <div className="text-[13px] text-ink-600">{b.label}</div>
-                  <div className="text-[11.5px] text-ink-400 mt-0.5">
-                    {b.reason}
-                  </div>
-                </div>
-                <div className="text-[12.5px] text-ink-300 font-mono tabular line-through">
-                  {formatMoney(b.amount)}
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
-    </>
-  );
-}
-
 function RecoupsSection({ recoups }: { recoups: Recoup[] }) {
   const total = recoups.reduce((s, r) => s + r.amount, 0);
   const disputedTotal = recoups
@@ -708,32 +590,6 @@ function SignoffSection({ settlement }: { settlement: Settlement }) {
         )}
       </CardContent>
     </Card>
-  );
-}
-
-function Row({
-  label,
-  value,
-  note,
-}: {
-  label: string;
-  value: string;
-  note?: string;
-}) {
-  return (
-    <div className="flex items-baseline justify-between py-2.5">
-      <div>
-        <div className="text-[13px] text-ink-600">{label}</div>
-        {note && (
-          <div className="text-[11.5px] text-ink-400 mt-0.5 max-w-md leading-snug">
-            {note}
-          </div>
-        )}
-      </div>
-      <div className="text-[13.5px] text-ink-900 font-mono tabular">
-        {value}
-      </div>
-    </div>
   );
 }
 
